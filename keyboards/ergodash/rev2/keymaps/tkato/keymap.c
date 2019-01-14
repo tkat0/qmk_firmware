@@ -21,6 +21,18 @@ enum custom_keycodes {
 #define XXXXXXX KC_NO
 #define EISU LALT(KC_GRV)
 
+//Tap Dance Declarations
+enum {
+  TD_LANG2_LANG1 = 0,
+};
+
+//Tap Dance Definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+  //Tap once for Esc, twice for Caps Lock
+  [TD_LANG2_LANG1]  = ACTION_TAP_DANCE_DOUBLE(KC_LANG2, KC_LANG1),
+};
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Qwerty
@@ -33,7 +45,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------+------|
    * | Shift|   Z  |   X  |   C  |   V  |   B  |  ESC |                    | Raise|   N  |   M  |   ,  |   .  |   /  | Shift|
    * |-------------+------+------+------+------+------+------+------+------+------+------+------+------+------+-------------|
-   * |      |      |  ALt | GUI  |||||||| Lower| Space|  GUI |||||||| Bksp | Enter| Raise|||||||| Left | Down |  Up  | Right|
+   * |      |      |  ALt | GUI  |||||||| Lower| Space| LANG |||||||| Bksp | Enter| Raise|||||||| Left | Down |  Up  | Right|
    * ,----------------------------------------------------------------------------------------------------------------------.
    */
   [_QWERTY] = LAYOUT( \
@@ -41,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,                           KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, \
     KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_ESC,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, RAISE,   \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_ESC ,                        RAISE  , KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, \
-    _______, _______, KC_LALT, KC_LGUI,          LOWER,   KC_SPC , KC_LGUI,      KC_BSPC, KC_ENT , RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+    _______, _______, KC_LALT, KC_LGUI,          LOWER,KC_SPC , TD(TD_LANG2_LANG1),    KC_BSPC, KC_ENT , RAISE,KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
   ),
 
   /* Lower
@@ -53,16 +65,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * | Ctrl |   A  |   S  |   D  |   F  |   G  |  ESC |                    |   H  |   J  |   K  | Left | Right|   "  | Raise|
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------+------|
    * | Shift| Left | Down |  Up  | Right|   B  |  ESC |                    | Raise|   N  |   M  | Down |  .   |   /  | Shift|
-   * |-------------+------+------+------+------+------+------+------+------+------+------+------+------+------+-------------|
-   * |      |      |  ALt | GUI  |||||||| Lower| Space|  GUI |||||||| Bksp | Enter| Raise|||||||| Left | Down |  Up  | Right|
-   * ,----------------------------------------------------------------------------------------------------------------------.
    */
   [_LOWER] = LAYOUT(
     KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                          KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, \
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,                           KC_Y,    KC_U,    KC_I,    KC_O,    KC_UP,   KC_LBRC, KC_BSPC, \
     KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_ESC,                         KC_H,    KC_J,    KC_K,    KC_LEFT, KC_RGHT, KC_QUOT, RAISE,   \
     KC_LSFT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_B,    KC_ESC ,                        RAISE  , KC_N,    KC_M,    KC_DOWN, KC_DOT,  KC_SLSH, KC_RSFT, \
-    _______, _______, KC_LALT, KC_LGUI,          LOWER,   KC_SPC , KC_LGUI,      KC_BSPC, KC_ENT , RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+    _______, _______, KC_LALT, KC_LGUI,          LOWER,KC_SPC , TD(TD_LANG2_LANG1),    KC_BSPC, KC_ENT , RAISE,KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
   ),
 
   /* Raise
@@ -75,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------+------|
    * | Shift| Left | Down |  Up  | Right|   B  |  ESC |                    | Raise|   N  |   M  | Down |  .   |   /  | Shift|
    * |-------------+------+------+------+------+------+------+------+------+------+------+------+------+------+-------------|
-   * |      |      |  ALt | GUI  |||||||| Lower| Space|  GUI |||||||| Bksp | Enter| Raise|||||||| Home |PageDn|PageUp|  End |
+   * |      |      |  ALt | GUI  |||||||| Lower| Space| LANG |||||||| Bksp | Enter| Raise|||||||| Home |PageDn|PageUp|  End |
    * ,----------------------------------------------------------------------------------------------------------------------.
    */
   [_RAISE] = LAYOUT(
@@ -83,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,                           KC_Y,    KC_U,    KC_I,    KC_O,    KC_UP,   KC_LBRC, KC_BSPC, \
     KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_ESC,                         KC_H,    KC_J,    KC_K,    KC_LEFT, KC_RGHT, KC_QUOT, RAISE,   \
     KC_LSFT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_B,    KC_ESC ,                        RAISE  , KC_N,    KC_M,    KC_DOWN, KC_DOT,  KC_SLSH, KC_RSFT, \
-    _______, _______, KC_LALT, KC_LGUI,          LOWER,   KC_SPC , KC_LGUI,      KC_BSPC, KC_ENT , RAISE,            KC_HOME, KC_PGDN, KC_PGUP, KC_END   \
+    _______, _______, KC_LALT, KC_LGUI,          LOWER,KC_SPC , TD(TD_LANG2_LANG1),    KC_BSPC, KC_ENT,  RAISE,KC_HOME, KC_PGDN, KC_PGUP, KC_END   \
   ),
 
   /* Adjust
