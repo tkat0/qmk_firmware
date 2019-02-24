@@ -9,6 +9,7 @@ Hardware Availability: Order your own [yourself](https://github.com/omkbd/ErgoDa
 
 Make example for this keyboard (after setting up your build environment):
 
+    sudo -s
     make ergodash/rev2:tkato
     make ergodash/rev2:tkato:avrdude
 
