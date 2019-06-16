@@ -30,7 +30,7 @@ enum custom_keycodes {
 #define PC_DEBUG LCTL(LSFT(KC_D))
 
 // Cmd + Space
-//#define LANG LGUI(KC_SPC)
+#define KC_LANG LGUI(KC_SPC)
 #define CMDTAB LGUI(KC_TAB)
 
 #define ALFRED LALT(KC_SPC)
@@ -49,7 +49,10 @@ enum custom_keycodes {
 
 #define RSPC LT(_RAISE, KC_SPC)
 #define LENT LT(_LOWER, KC_ENT)
-//#define LESC LT(_LOWER, KC_ESC)
+//#define LESC LT(_LOWER, M(0))
+#define LESC LT(_LOWER, KC_ESC)
+#define LOWGUI LT(_LOWER, KC_LGUI)
+#define L_TAB LT(_LOWER, KC_TAB)
 #define LLANG2 LT(_LOWER, KC_LANG2)
 #define LBSPC LT(_LOWER, KC_BSPC)
 
@@ -65,7 +68,8 @@ enum {
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
   //Tap once for Esc, twice for Caps Lock
-  [TD_LANG2_LANG1]  = ACTION_TAP_DANCE_DOUBLE(KC_LANG2, KC_LANG1),
+//  [TD_LANG2_LANG1]  = ACTION_TAP_DANCE_DOUBLE(KC_LANG1, KC_LANG2),
+  [TD_LANG2_LANG1]  = ACTION_TAP_DANCE_DOUBLE(KC_LANG, KC_LANG2),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -78,17 +82,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
    * | Ctrl |   A  |   S  |   D  |   F  |   G  |  ESC |                    |  "   |   H  |   J  |   K  |   L  |   ;  |   -  |
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------+------|
-   * | Shift|   Z  |   X  |   C  |   V  |   B  |Alfred|                    |  `   |   N  |   M  |   ,  |   .  |   /  |   =  |
+   * | Shift|   Z  |   X  |   C  |   V  |   B  | LANG1|                    |Alfred|   N  |   M  |   ,  |   .  |   /  |   =  |
    * |-------------+------+------+------+------+------+------+------+------+------+------+------+------+------+-------------|
-   * |  PS1 |  PS2 |  ALt | GUI  |||||||| LANG2| Enter| LANG1|||||||| Bksp | Space|  ESC ||||||||  F7  |  F8  |  F9  |  F10 |
+   * |  PS1 |  PS2 |  ALt | GUI  ||||||||  TAB | Enter| LANG |||||||| Bksp | Space| Shift||||||||  F7  |  F8  |  F9  |  F10 |
    * ,----------------------------------------------------------------------------------------------------------------------.
    */
+//    KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    TG(_LOWER),                     TG(_RAISE), KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
   [_QWERTY] = LAYOUT( \
-    KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    TG(_LOWER),                     TG(_RAISE), KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV, \
-    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_LBRC,                        KC_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,  \
-    KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    M(0),                           KC_QUOT, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS, \
-    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    ALFRED,                         KC_GRV,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL, \
-    PS1,     PS2,     KC_LALT, KC_LGUI, LLANG2,  SENT,    KC_LANG1,                       KC_BSPC, RSPC , KC_ESC,   KC_F7,   KC_F8,   KC_F9,   KC_F10   \
+    _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, _______, _______, _______, \
+    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,                        _______, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,  \
+    KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______,                        _______, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS, \
+    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LANG2,                       ALFRED,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL, \
+    KC_BTN1, KC_BTN2, KC_LALT, KC_LALT, GUI_T(KC_ESC), SENT,    TD(TD_LANG2_LANG1),             KC_BSPC, RSPC,    LOWER,   KC_F7,   KC_F8,   PS1,     PS2   \
   ),
 
   /* Raise
@@ -106,9 +111,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_RAISE] = LAYOUT(
     _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, _______, MC,      KC_LPRN,                        KC_RPRN, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, PC_LTAB, PC_RTAB, CMDTAB,  _______,                        KC_GRV,  KC_BSPC, KC_UP,   KC_SPC,  _______, _______, _______, \
-    _______, _______, _______, _______, _______, _______, _______,                        _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,  _______, KC_LSFT, \
+    _______, _______, _______, _______, KC_LPRN, KC_RPRN, _______,                        _______, _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, KC_LBRC, KC_RBRC, _______,                        _______, KC_QUOT, KC_UP,   KC_GRV,  _______, _______, _______, \
+    _______, _______, _______, _______, _______, M(0),    _______,                        _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,  _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, PC_RUN,  PC_DEBUG,_______, _______  \
   ),
 
@@ -116,21 +121,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------------------------------------------------------------.
    * |      |      |      |      |      |      |      |                    |      |      |      |      |  F11 |  F12 |      |
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
-   * |      |  F1  |  F2  |  F3  |  F4  |  F5  |      |                    |      |  F6  |  F7  |  F8  |  F9  |  F10 |  ~   |
+   * |      |   1  |   2  |   3  |   4  |   5  |      |                    |      |   6  |   7  |   8  |   9  |   0  |      |
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
    * |      |   !  |   @  |   #  |   $  |   $  |      |                    |   `  |   ^  |   &  |   *  |   (  |   )  |  \   |
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
-   * |      |   1  |   2  |   3  |   4  |   5  |      |                    |      |   6  |   7  |   8  |   9  |   0  |      |
+   * |      |  F1  |  F2  |  F3  |  F4  |  F5  |      |                    |      |  F6  |  F7  |  F8  |  F9  |  F10 |  ~   |
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
    * |      |      |      |      ||||||||      |      |      ||||||||      |      |      ||||||||      |      |      |      |
    * ,----------------------------------------------------------------------------------------------------------------------.
    */
   [_LOWER] = LAYOUT( \
     _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, KC_F11,  KC_F12,  _______, \
-    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,                        _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______, \
-    _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, _______,                        KC_GRV,  KC_CIRC, KC_AMPR, KC_ASTR, KC_RPRN, KC_LPRN, _______, \
     _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    _______,                        _______, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______, \
-    _______, _______, _______, _______, _______, _______, _______,                        KC_DEL,  _______, _______, _______, _______, _______, _______  \
+    _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, _______,                        KC_GRV,  KC_CIRC, KC_AMPR, KC_ASTR, KC_RPRN, KC_LPRN, _______, \
+    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,                        _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______, \
+    _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, _______, _______, _______  \
   ),
 
 
