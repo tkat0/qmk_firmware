@@ -17,6 +17,7 @@ enum custom_keycodes {
   RAISE,
   LOWER,
   ADJUST,
+  MY_ESC,
 };
 
 // Fillers to make layering more clear
@@ -90,29 +91,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( \
     _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, _______, _______, _______, \
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,                        _______, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,  \
-    KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______,                        _______, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS, \
+    KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_ESC,                        _______, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LANG2,                       ALFRED,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL, \
-    KC_BTN1, KC_BTN2, KC_LALT, KC_LALT, GUI_T(KC_ESC), SENT,    TD(TD_LANG2_LANG1),             KC_BSPC, RSPC,    LOWER,   KC_F7,   KC_F8,   PS1,     PS2   \
+    KC_BTN1, KC_BTN2, KC_LALT, KC_LALT, MY_ESC,  SENT,    TD(TD_LANG2_LANG1),             KC_BSPC, RSPC,    LOWER,   KC_F7,   KC_F8,   PS1,     PS2   \
   ),
 
   /* Raise
    * ,----------------------------------------------------------------------------------------------------------------------.
    * |      |      |      |      |      |      |      |                    |      |      |      |      |      |      |      |
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
-   * |      |      |      |      |  (   |  )   |      |                    |      |      |      |      |      |      |      |
+   * |      |      |      |      |  {   |  }   |      |                    |      |      |      |      |      |      |      |
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
-   * |      |      |      |      |  [   |  ]   |      |                    |      |  '   |   ↑  |   `  |      |      |      |
+   * |      |      |      |      |  (   |  )   |      |                    |      |   ←  |   ↓  |   ↑  |   →  |      |      |
    * |------+------+------+------+------+------+---------------------------+------+------+------+------+------+------|------|
-   * |      |      |      |      |      | Esc  |      |                    |      |  ←   |   ↓  |   →  |      |      |      |
+   * |      |      |      |      |  [   |  ]   |      |                    |      |  '   |   `  |      |      |      |      |
    * |------+------+------+------+------+------+------+--------------------+------+------+------+------+------+------+------|
    * |      |      |      |      ||||||||      |      |      ||||||||      |      |      |||||||| PCRUN|PCDBG |      |      |
    * ,----------------------------------------------------------------------------------------------------------------------.
    */
   [_RAISE] = LAYOUT(
     _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, KC_LPRN, KC_RPRN, _______,                        _______, _______, _______, _______, _______, _______, _______, \
-    _______, _______, _______, _______, KC_LBRC, KC_RBRC, _______,                        _______, KC_QUOT, KC_UP,   KC_GRV,  _______, _______, _______, \
-    _______, _______, _______, _______, _______, M(0),    _______,                        _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,  _______, _______, \
+    _______, _______, _______, _______, KC_LCBR, KC_RCBR, _______,                        _______, _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, KC_LPRN, KC_RPRN, _______,                        _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,_______, _______, \
+    _______, _______, _______, _______, KC_LBRC, KC_RBRC, _______,                        _______, KC_QUOT, KC_GRV,  _______, _______,  _______, _______, \
     _______, _______, _______, _______, _______, _______, _______,                        _______, _______, _______, PC_RUN,  PC_DEBUG,_______, _______  \
   ),
 
@@ -168,6 +169,8 @@ void persistent_default_layer_set(uint16_t default_layer) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  static uint16_t my_hash_timer;
+
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
@@ -204,17 +207,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case MY_ESC:
+      if (record->event.pressed) {
+        // on keydown
+        my_hash_timer = timer_read();
+        register_code(KC_LGUI);
+      } else {
+        // on keyup
+        unregister_code(KC_LGUI);
+        if (timer_elapsed(my_hash_timer) < TAPPING_TERM) {
+          SEND_STRING(SS_TAP(X_LANG2)SS_TAP(X_ESCAPE));
+        }
+      }
+      return false;
+      break;
   }
   return true;
-}
-
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
-    switch(id) {
-    case 0: // EN -> ESC
-        if (record->event.pressed) {
-            SEND_STRING(SS_TAP(X_LANG2)SS_TAP(X_ESCAPE));
-        }
-        break;
-    }
-    return MACRO_NONE;
 }
