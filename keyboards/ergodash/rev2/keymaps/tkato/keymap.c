@@ -30,8 +30,8 @@ enum custom_keycodes {
 #define PC_RUN LCTL(LSFT(KC_R))
 #define PC_DEBUG LCTL(LSFT(KC_D))
 
-// Cmd + Space
-#define KC_LANG LGUI(KC_SPC)
+//#define KC_LANG LGUI(KC_SPC)
+#define KC_LANG LALT(KC_SPC)
 #define CMDTAB LGUI(KC_TAB)
 
 #define ALFRED LALT(KC_SPC)
@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,                        _______, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,  \
     KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_ESC,                        _______, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS, \
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LANG2,                       ALFRED,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL, \
-    KC_BTN1, KC_BTN2, KC_LALT, KC_LALT, MY_ESC,  SENT,    TD(TD_LANG2_LANG1),             KC_BSPC, RSPC,    LOWER,   KC_F7,   KC_F8,   PS1,     PS2   \
+    KC_BTN1, KC_BTN2, KC_LALT, KC_LALT, MY_ESC,  SENT,    KC_LANG,             KC_BSPC, RSPC,    LOWER,   KC_F7,   KC_F8,   PS1,     PS2   \
   ),
 
   /* Lower
