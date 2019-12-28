@@ -8,7 +8,10 @@ extern keymap_config_t keymap_config;
 #define META 1
 #define SYMB 2
 #define GAME 3
-#define MY_ESC_G 4
+
+enum custom_keycodes {
+  MY_ESC_G = SAFE_RANGE,
+};
 
 // Fillers to make layering more clear
 #define _______ KC_TRNS
@@ -88,25 +91,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  static uint16_t my_hash_timer;
+static bool my_esc_g_pressed = false;
 
-  switch (keycode) {
-    // Tap: Esc, Long Tap: GUI
-    case MY_ESC_G:
-      if (record->event.pressed) {
-        // on keydown
-        my_hash_timer = timer_read();
-        register_code(KC_LGUI);
-      } else {
-        // on keyup
-        unregister_code(KC_LGUI);
-        if (timer_elapsed(my_hash_timer) < TAPPING_TERM) {
-          SEND_STRING(SS_TAP(X_ESCAPE));
-        }
-      }
-      return false;
-      break;
-  }
-  return true;
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//  static uint16_t my_hash_timer;
+
+    switch (keycode) {
+        // Tap: Esc, Long Tap: GUI
+        case MY_ESC_G:
+            if (record->event.pressed) {
+                my_esc_g_pressed = true;
+                // on keydown
+//        my_hash_timer = timer_read();
+//        register_code(KC_LGUI);
+            } else {
+                // on keyup
+                my_esc_g_pressed = false;
+                unregister_code(KC_LGUI);
+//        if (timer_elapsed(my_hash_timer) < TAPPING_TERM) {
+//          SEND_STRING(SS_TAP(X_ESCAPE));
+//        }
+                register_code(KC_ESC);
+                unregister_code(KC_ESC);
+            }
+            return false;
+        default:
+            if (my_esc_g_pressed) {
+                register_code(KC_LGUI);
+            }
+            break;
+    }
+    return true;
 }
