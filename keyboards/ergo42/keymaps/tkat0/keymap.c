@@ -12,6 +12,7 @@ extern keymap_config_t keymap_config;
 
 enum custom_keycodes {
   MY_ESC_G = SAFE_RANGE,
+  MY_SPC_META,
 };
 
 // Fillers to make layering more clear
@@ -23,7 +24,6 @@ enum custom_keycodes {
 #define MY_LANG LGUI(KC_SPC)
 // Tap: Enter, Long Tap: Shift
 #define MY_ENT_S SFT_T(KC_ENT)
-#define MY_SPC_META LT(META, KC_SPC)
 
 // PrintScreen to clipboard
 #define MY_PS1 LGUI(LSFT(LCTL(KC_4)))
@@ -93,29 +93,68 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 static bool my_esc_g_pressed = false;
+static bool my_space_meta_pressed = false;
 
+// # tap
+// [this handler]   MY_KEY pressed -> set flg ON
+// [this handler]   MY_KEY release -> tap operation IF flg ON
+//
+// # hold
+// [this handler]   MY_KEY pressed -> set flg ON
+// [this handler]   OTHER_KEY pressed -> set flg OFF & hold operation (pre)
+// [system handler] OTHER_KEY pressed
+// [this handler]   MY_KEY release -> hold operation (post) IF flg OFF
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode) {
-        // Tap: Esc, Long Tap: GUI
+        // Tap: Esc, Tap with another key X: GUI + X
         case MY_ESC_G:
             if (record->event.pressed) {
                 // on keydown
                 my_esc_g_pressed = true;
             } else {
                 // on keyup
-                my_esc_g_pressed = false;
-                unregister_code(KC_LGUI);
-                register_code(KC_ESC);
-                unregister_code(KC_ESC);
+                if (my_esc_g_pressed) {
+                    // tap operation
+                    my_esc_g_pressed = false;
+                    unregister_code(KC_LGUI);
+                } else {
+                    // hold operation(post)
+                    register_code(KC_ESC);
+                    unregister_code(KC_ESC);
+                }
+            }
+            return false;
+        // Tap: Space, Tap with another key X: META + X
+        case MY_SPC_META:
+            if (record->event.pressed) {
+                // on keydown
+                my_space_meta_pressed = true;
+            } else {
+                // on keyup
+                if (my_space_meta_pressed) {
+                    // tap operation
+                    my_space_meta_pressed = false;
+                    register_code(KC_SPC);
+                    unregister_code(KC_SPC);
+                } else {
+                    // hold operation(post)
+                    layer_off(META);
+                }
             }
             return false;
         default:
+            // hold operation(pre)
+            if (my_space_meta_pressed) {
+                my_space_meta_pressed = false;
+                layer_on(META);
+            }
             if (my_esc_g_pressed) {
-                // MY_ESC_Gが押された状態で他のキーが押されたときにLGUIを発行する
+                my_esc_g_pressed = false;
                 register_code(KC_LGUI);
             }
             break;
     }
     return true;
 }
+#define MY_SPC_META LT(META, KC_SPC)
