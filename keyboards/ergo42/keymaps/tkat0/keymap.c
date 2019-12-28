@@ -117,11 +117,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (my_esc_g_pressed) {
                     // tap operation
                     my_esc_g_pressed = false;
-                    unregister_code(KC_LGUI);
-                } else {
-                    // hold operation(post)
                     register_code(KC_ESC);
                     unregister_code(KC_ESC);
+                } else {
+                    // hold operation(post)
+                    unregister_code(KC_LGUI);
                 }
             }
             return false;
