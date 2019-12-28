@@ -28,7 +28,7 @@ extern keymap_config_t keymap_config;
 #define MY_PS2 LGUI(LSFT(KC_4))
 
 
-const uint16_t PROGMEM keymaps[][M ATRIX_ROWS][MATRIX_COLS] = {
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* BASE
  * ,------------------------------------------------.   ,------------------------------------------------.
