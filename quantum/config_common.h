@@ -21,6 +21,9 @@
 #define ROW2COL       1
 #define CUSTOM_MATRIX 2 /* Disables built-in matrix scanning code */
 
+// useful for direct pin mapping
+#define NO_PIN (~0)
+
 #ifdef __AVR__
     #ifndef __ASSEMBLER__
       #include <avr/io.h>
@@ -56,6 +59,11 @@
         #define PINC_ADDRESS 0x3
         #define PINB_ADDRESS 0x6
         #define PINA_ADDRESS 0x9
+    #elif defined(__AVR_ATmega328P__)
+        #define ADDRESS_BASE 0x00
+        #define PINB_ADDRESS 0x3
+        #define PINC_ADDRESS 0x6
+        #define PIND_ADDRESS 0x9
     #else
         #error "Pins are not defined"
     #endif
@@ -196,6 +204,8 @@
     #define B13 PAL_LINE(GPIOB, 13)
     #define B14 PAL_LINE(GPIOB, 14)
     #define B15 PAL_LINE(GPIOB, 15)
+    #define B16 PAL_LINE(GPIOB, 16)
+    #define B17 PAL_LINE(GPIOB, 17)
     #define C0  PAL_LINE(GPIOC, 0)
     #define C1  PAL_LINE(GPIOC, 1)
     #define C2  PAL_LINE(GPIOC, 2)
