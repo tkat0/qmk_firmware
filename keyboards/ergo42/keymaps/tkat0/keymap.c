@@ -50,6 +50,7 @@ enum custom_keycodes {
 #define MY_W_L LCTL(LALT(KC_LEFT))
 #define MY_W_R LCTL(LALT(KC_RIGHT))
 #define MY_W_MX LCTL(LALT(KC_ENT))
+#define MY_W_C LCTL(LALT(KC_C))
 #define MY_W_L3 LCTL(LALT(KC_D))
 #define MY_W_L23 LCTL(LALT(KC_E))
 #define MY_W_C3 LCTL(LALT(KC_F))
@@ -64,9 +65,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* BASE
    * ,------------------------------------------------.   ,------------------------------------------------.
-   * | Tab  |   Q  |   W  |   E  |   R  |   T  |      |   |      |   Y  |   U  |   I  |   O  |   P  |  \   |
+   * | Tab  |   Q  |   W  |   E  |   R  |   T  |  C   |   |  MX  |   Y  |   U  |   I  |   O  |   P  |  \   |
    * |------+------+------+------+------+------+------|   |------+------+------+------+------+------+------|
-   * | Ctrl |   A  |   S  |   D  |   F  |   G  |      |   |      |   H  |   J  |   K  |   L  |   ;  |  -   |
+   * | Ctrl |   A  |   S  |   D  |   F  |   G  |  L   |   |   R  |   H  |   J  |   K  |   L  |   ;  |  -   |
    * |------+------+------+------+------+------+------|   |------|------+------+------+------+------+------|
    * | Shift|   Z  |   X  |   C  |   V  |   B  |Alfred|   | Term |   N  |   M  |   ,  |   .  |   /  |  =   |
    * |------+------+------+------+------+------+------|   |------+------+------+------+------+------+------|
@@ -75,8 +76,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `------------------------------------------------'   `------------------------------------------------'
    */
   [BASE] = LAYOUT( \
-      KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,     XXXXXXX,    XXXXXXX, KC_Y,        KC_U,     KC_I,    KC_O,    KC_P,    KC_BSLS, \
-      KC_LCTRL, KC_A,    KC_S,    KC_D,    KC_F,     KC_G,     XXXXXXX,    XXXXXXX, KC_H,        KC_J,     KC_K,    KC_L,    KC_SCLN, KC_MINUS, \
+      KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,     MY_W_C,     MY_W_MX, KC_Y,        KC_U,     KC_I,    KC_O,    KC_P,    KC_BSLS, \
+      KC_LCTRL, KC_A,    KC_S,    KC_D,    KC_F,     KC_G,     MY_W_L,     MY_W_R,  KC_H,        KC_J,     KC_K,    KC_L,    KC_SCLN, KC_MINUS, \
       KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,     KC_B,     MY_ALFRED,  MY_TERM, KC_N,        KC_M,     KC_COMM, KC_DOT,  KC_SLSH, KC_EQL, \
       XXXXXXX,  XXXXXXX, XXXXXXX, KC_LALT, MY_ESC_G, MY_ENT_S, MY_LANG,    KC_BSPC, MY_SPC_META, MO(SYMB), MO(WINDOW), XXXXXXX, MY_PS1,  MY_PS2   \
   ),
