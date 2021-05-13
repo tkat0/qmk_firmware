@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+------|   |------|------+------+------+------+------+------|
    * | Shift|   Z  |   X  |   C  |   V  |   B  |Alfred|   | Term |   N  |   M  |   ,  |   .  |   /  |  =   |
    * |------+------+------+------+------+------+------|   |------+------+------+------+------+------+------|
-   * |      |      |      | ALt  | Esc/ |Enter/| Lang |   | Bksp |Space/|SYMB  |WINDOW|      |MY_PS1|MY_PS2|
+   * |WINDOW|      |      | ALt  | Esc/ |Enter/| Lang |   | Bksp |Space/|SYMB  |      |      |MY_PS1|MY_PS2|
    * |      |      |      |      | GUI  |Shift |      |   |      |Meta  |      |      |      |      |      |
    * `------------------------------------------------'   `------------------------------------------------'
    */
@@ -79,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,     MY_W_C,     MY_W_MX, KC_Y,        KC_U,     KC_I,    KC_O,    KC_P,    KC_BSLS, \
       KC_LCTRL, KC_A,    KC_S,    KC_D,    KC_F,     KC_G,     MY_W_L,     MY_W_R,  KC_H,        KC_J,     KC_K,    KC_L,    KC_SCLN, KC_MINUS, \
       KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,     KC_B,     MY_ALFRED,  MY_TERM, KC_N,        KC_M,     KC_COMM, KC_DOT,  KC_SLSH, KC_EQL, \
-      XXXXXXX,  XXXXXXX, XXXXXXX, KC_LALT, MY_ESC_G, MY_ENT_S, MY_LANG,    KC_BSPC, MY_SPC_META, MO(SYMB), MO(WINDOW), XXXXXXX, MY_PS1,  MY_PS2   \
+      MO(WINDOW),  XXXXXXX, XXXXXXX, KC_LALT, MY_ESC_G, MY_ENT_S, MY_LANG,    KC_BSPC, MY_SPC_META, MO(SYMB), XXXXXXX, XXXXXXX, MY_PS1,  MY_PS2   \
   ),
 
 
@@ -91,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+------|   |------|------+------+------+------+------+------|
    * |      |      |      |      |   [  |   ]  |      |   |      |   '  |   `  |      |      |      |      |
    * |------+------+------+------+------+------+------|   |------+------+------+------+------+------+------|
-   * |      | LCtrl|   `  |   \  | LAlt | META |Space |   |Space |   '  |   -  |   =  |      |      |      |
+   * |      |      |   `  |   \  | LAlt | META |Space |   |Space |   '  |   -  |   =  |      |      |      |
    * `------------------------------------------------'   `------------------------------------------------'
    */
   [META] = LAYOUT( \
@@ -125,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+------|   |------+------+------+------+------+------+------|
    * |      |   4  |   5  |   6  |      |      |      |   |      |  TL  |  TR  |  BR  |  BL  |      |      |
    * |------+------+------+------+------+------+------|   |-------------+------+------+------+------+------|
-   * |      |   7  |   8  |   9  |   L  |   R  |  MX  |   |      |  L3  |  L23 |  C3  |  R23 |  R3  |      |
+   * |      |   7  |   8  |   9  |      |      |      |   |      |  L3  |  L23 |  C3  |  R23 |  R3  |      |
    * |------+------+------+------+------+------+------|   |------+------+------+------+------+------+------|
    * |      |      |      |      |      |      |      |   |      |      |      |      |      |      |      |
    * `------------------------------------------------'   `------------------------------------------------'
@@ -133,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [WINDOW] = LAYOUT( \
     _______, MY_WS_1, MY_WS_2, MY_WS_3, _______, _______, _______,   _______, _______, _______,  _______, _______,  _______, _______, \
     _______, MY_WS_4, MY_WS_5, MY_WS_6, _______, _______, _______,   _______, MY_TL,   MY_TR,    MY_BR,   MY_BL,    _______, _______, \
-    _______, MY_WS_7, MY_WS_8, MY_WS_9, MY_W_L,  MY_W_R,  MY_W_MX,   _______, MY_W_L3, MY_W_L23, MY_W_C3, MY_W_R23, MY_W_R3, _______, \
+    _______, MY_WS_7, MY_WS_8, MY_WS_9, _______, _______, _______,   _______, MY_W_L3, MY_W_L23, MY_W_C3, MY_W_R23, MY_W_R3, _______, \
     _______, _______, _______, _______, _______, _______, _______,   _______, _______, _______,  _______, _______,  _______, _______ \
   )
 
